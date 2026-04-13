@@ -1,3 +1,6 @@
 public class Elias {
-    String elias = "elias";
+    public static void main (String[] args){
+        System.out.println("hej)");
+    }
+
 }
