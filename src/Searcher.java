@@ -6,6 +6,8 @@ public class Searcher implements SearchOperations{
 		private Map<String, Recording> titleToRecording = new HashMap<>();
 		private Map<String, Set<Recording>> genreToRecordings = new HashMap<>();
 		private SortedMap<Integer, Set<Recording>> yearToRecordings = new TreeMap<>();
+		private Set<Recording> allRecordings = new HashSet<>();
+
 
 	public Searcher(Collection<Recording> data) {
 		for (Recording r: data){
@@ -77,7 +79,7 @@ public class Searcher implements SearchOperations{
 		return titleToRecording.get(title);
 	}
 
-    //tailmap och headmap
+    //klar
 	@Override
 	public Collection<Recording> getRecordingsAfter(int year) {
 		Set<Recording> recordingsAfter = new HashSet<> ();
@@ -103,13 +105,31 @@ public class Searcher implements SearchOperations{
 	}
 
 	@Override
+	//klar
 	public Collection<Recording> getRecordingsByGenreAndYear(String genre, int yearFrom, int yearTo) {
-		return List.of();
+		Set<Recording> recordingsByYear = new HashSet<>();
+		for(Set<Recording> r: yearToRecordings.subMap(yearFrom, yearTo).values()){
+			recordingsByYear.addAll(r);
+		}
+		Set<Recording> recordingsByGenreAndYear = new HashSet<>();
+		for(Recording r: recordingsByGenreAndYear){
+			if (r.getGenre().equals(genre)){
+				recordingsByGenreAndYear.add(r);
+			}
+		}
+		return Collections.unmodifiableSet(recordingsByGenreAndYear);
 	}
 
 	@Override
+	//klar
 	public Collection<Recording> offerHasNewRecordings(Collection<Recording> offered) {
-		return List.of();
+		Set<Recording> missing = new HashSet<>();
+		for (Recording r : offered){
+			if (!allRecordings.contains(r)){
+				missing.add(r);
+			}
+		}
+		return Collections.unmodifiableSet(missing);
 	}
 }
 
