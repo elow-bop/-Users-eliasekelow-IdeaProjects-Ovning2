@@ -5,9 +5,18 @@ public class Searcher implements SearchOperations{
 		private Map<String, Set<Recording>> artistToRecordings = new HashMap<>();
 		private Map<String, Recording> titleToRecording = new HashMap<>();
 		private Map<String, Set<Recording>> genreToRecordings = new HashMap<>();
+		private SortedMap<Integer, Set<Recording>> yearToRecordings = new TreeMap<>();
 
 	public Searcher(Collection<Recording> data) {
 		for (Recording r: data){
+			int year = r.getYear();
+			if(yearToRecordings.containsKey(year)){
+				yearToRecordings.get(year).add(r);
+			}else {
+				Set<Recording> newRecording = new HashSet<>();
+				newRecording.add(r);
+				yearToRecordings.put(year, newRecording);
+			}
 			String artist = r.getArtist();
 			if(artistToRecordings.containsKey(artist)){
 				artistToRecordings.get(artist).add(r);
@@ -71,12 +80,20 @@ public class Searcher implements SearchOperations{
     //tailmap och headmap
 	@Override
 	public Collection<Recording> getRecordingsAfter(int year) {
-		return List.of();
+		Set<Recording> recordingsAfter = new HashSet<> ();
+		for(Set<Recording> r: yearToRecordings.tailMap(year).values()){
+			recordingsAfter.addAll(r);
+		}return recordingsAfter;
 	}
 
 	@Override
+	//klar?
 	public SortedSet<Recording> getRecordingsByArtistOrderedByYearAsc(String artist) {
-		return null;
+		SortedSet<Recording> recordingsByArtist = new TreeSet<>();
+		for(Recording r : artistToRecordings.get(artist)) {
+			recordingsByArtist.add(r);
+		}
+		return Collections.unmodifiableSortedSet(recordingsByArtist);
 	}
 
 	@Override

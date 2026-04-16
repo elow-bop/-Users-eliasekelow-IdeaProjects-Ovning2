@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
-public class Recording {
+public class Recording implements Comparable<Recording> {
 	private final int year;
 	private final String artist;
 	private final String title;
@@ -56,4 +56,25 @@ public class Recording {
 	public String toString() {
 		return String.format("{ %s | %s | %s | %d | %s }", artist, title, genre, year, type);
 	}
+
+	@Override
+	public int compareTo(Recording other) {
+
+		if(year > other.year) {
+			return 1;
+		}else if(year < other.year) {
+			return -1;
+		}else if(title.compareTo(other.title) > 0) {
+			return 1;
+		}else if(title.compareTo(other.title) < 0) {
+			return -1;
+		}else if(artist.compareTo(other.artist) > 0) {
+			return 1;
+		}else if(artist.compareTo(other.artist) < 0){
+			return -1;
+		}else{
+			return 0;
+		}
+	}
+
 }
