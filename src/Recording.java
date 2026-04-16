@@ -1,4 +1,6 @@
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 public class Recording {
@@ -34,6 +36,20 @@ public class Recording {
 
 	public int getYear() {
 		return year;
+	}
+
+	@Override
+	public boolean equals(Object b){
+		if(b instanceof Recording r ){
+			return r.year == this.year && r.title.equals(this.title) && r.artist.equals(this.artist);
+		}else{
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hash(year, artist, title);
 	}
 
 	@Override
